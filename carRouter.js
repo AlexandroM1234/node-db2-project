@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
   db("cars")
+    .select("*")
     .then((cars) => {
       res.json(cars);
     })
