@@ -32,4 +32,17 @@ router.get("/:id", (req, res) => {
     });
 });
 
+router.post("/", (req, res) => {
+  const newCar = req.body;
+  db("cars")
+    .insert(newCar)
+    .then((car) => {
+      res.status(201).json(car);
+    })
+    .catch((err) => {
+      res.status(500).json({ error: "error adding a new car" });
+      console.log("you messed up adding a new car", err);
+    });
+});
+
 module.exports = router;
