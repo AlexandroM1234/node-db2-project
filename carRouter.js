@@ -45,4 +45,42 @@ router.post("/", (req, res) => {
     });
 });
 
+router.put("/:id", (req, res) => {
+  const changes = req.body;
+  const { id } = req.params;
+
+  db("cars")
+    .where({ id })
+    .update(changes)
+    .then((count) => {
+      if (count) {
+        res.status(200).json(changes);
+      } else {
+        res
+          .status(404)
+          .json({ error: "a car with that id could not be found" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "error updating a post " });
+      console.log("error updating a post", err);
+    });
+});
+
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  db("cars")
+    .where({ id })
+    .delete({ id })
+    .then((post) => {
+      if (post) {
+        res.status(200).json({ message: "post was deleted" });
+      } else {
+        res
+          .status(404)
+          .json({ message: "post with that id could not be found" });
+      }
+    });
+});
+
 module.exports = router;
